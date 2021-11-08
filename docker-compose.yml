@@ -1,0 +1,81 @@
+version: '3'
+services:
+
+  #Redis Service
+  instapp-redis:
+    image: redis:5.0-alpine
+    container_name: instapp-redis
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "63792:6379"
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - redisdata:/data
+    networks:
+      - instapp-network
+
+  #PHP Service
+  instapp-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: laravel
+    container_name: instapp-app
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - instapp-network
+
+  #Nginx Service
+  instapp-webserver:
+    image: nginx:alpine
+    container_name: instapp-webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8088:80"
+      - "4438:443"
+    volumes:
+      - ./:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - instapp-network
+
+  #MySQL Service
+  instapp-db:
+    image: mysql:8.0
+    container_name: instapp-db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "33066:3306"
+    environment:
+      MYSQL_DATABASE: instapp_db2021
+      MYSQL_ROOT_PASSWORD: instapp_db2021
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - dbdata:/var/lib/mysql/
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
+      - ./mysql-files:/var/lib/mysql-files
+    networks:
+      - instapp-network
+
+#Docker Networks
+networks:
+  instapp-network:
+    driver: bridge
+#Volumes
+volumes:
+  dbdata:
+    driver: local
+  redisdata:
+    driver: local

@@ -41,8 +41,8 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - "8088:80"
-      - "4438:443"
+      - "8089:80"
+      - "4439:443"
     volumes:
       - ./:/var/www
       - ./nginx/conf.d/:/etc/nginx/conf.d/

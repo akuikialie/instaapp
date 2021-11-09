@@ -16,7 +16,7 @@ class CreateFeedCommentsTable extends Migration
         Schema::create('feed_comments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('feed_id')->index();
-            $table->text('comment')->index();
+            $table->text('comment');
             $table->boolean('published')->default(0);
             $table->timestamps();
             $table->softDeletes();

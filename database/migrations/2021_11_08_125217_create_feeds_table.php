@@ -15,8 +15,8 @@ class CreateFeedsTable extends Migration
     {
         Schema::create('feeds', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->index();
-            $table->text('body')->index();
+            $table->foreignId('user_id')->constrained()->index();
+	        $table->text('body');
             $table->boolean('published')->default(0);
             $table->boolean('actived')->default(0);
             $table->timestamps();

@@ -14,6 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'authentication'], function () {
+    Route::post('/login', 'Api\Authentication\Login\ShowController@index');
+    Route::post('/logout', 'Api\Authentication\Logout\DestroyController@destroy');
+});
+
+Route::group(['prefix' => 'account'], function () {
+    Route::get('/profile', 'Api\Account\Profile\ShowController@index');
+    Route::put('/profile', 'Api\Account\Profile\UpdateController@index');
+});
+
+Route::group(['prefix' => 'feeds'], function () {
+    Route::get('/', 'Api\Feed\AllController@index');
+    Route::post('/', 'Api\Feed\CreateController@index');
 });

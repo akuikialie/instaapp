@@ -38,4 +38,25 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof FailedException) {
+            return response()->json(
+                $this->generateFailedResponse($exception->message()),
+                400
+            );
+        }
+
+        return parent::render($request, $exception);
+    }
+
+    private function generateFailedResponse($error)
+    {
+        return [
+            'code' => 400,
+            'message' => 'Failed Code',
+            'error' => $error,
+        ];
+    }
 }

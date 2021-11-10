@@ -17,11 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'authentication'], function () {
     Route::post('/login', 'Api\Authentication\Login\ShowController@index')->name('authentication.login');
     Route::post('/logout', 'Api\Authentication\Logout\DestroyController@destroy')->name('authentication.logout');
+    Route::post('/register', 'Api\Authentication\Register\CreateController@index')->name('authentication.register');
 });
 
 Route::group(['prefix' => 'account'], function () {
     Route::get('/profile', 'Api\Account\Profile\ShowController@index')->name('account.profile');
-    Route::put('/profile', 'Api\Account\Profile\UpdateController@index')->name('account.profile.update');
+    // Route::put('/profile', 'Api\Account\Profile\UpdateController@index')->name('account.profile.update');
 });
 
 Route::group(['prefix' => 'feeds'], function () {

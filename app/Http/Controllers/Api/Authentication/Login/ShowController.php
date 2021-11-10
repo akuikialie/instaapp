@@ -6,8 +6,18 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 
+/**
+ * @group [API] Authentication
+ */
 class ShowController extends Controller
 {
+    /**
+     * Login
+     *
+     * @bodyParam username required Name. Example: "Antok Antopo"
+     * @bodyParam password required Password. Example: "default2021"
+     *
+     */
     public function index(Request $request)
     {
         try {
